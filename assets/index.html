@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="/dep/vue.min.js"></script>
+        <script src="js/components.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <titlebar :titletext="vm.data.title"></titlebar>
+            <titlebar :titletext="vm.data.answer"></titlebar>
+            <button v-on:click="hi">Change!</button>
+        </div>
+
+        <!-- query injection of a "model" object -->
+        <script src="/inject/model.js"></script>
+        <script src="js/AppComponent.js"></script>
+    </body>
+</html>

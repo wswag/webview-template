@@ -1,0 +1,9 @@
+#app {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.apptitle {
+    color: red;
+    font-family: monospace;
+}
