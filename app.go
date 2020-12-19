@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"errors"
-	"github.com/zserge/webview"
+	"github.com/wswag/webview"
 	"github.com/gorilla/mux"
 	"controllers"
 	"fmt"
