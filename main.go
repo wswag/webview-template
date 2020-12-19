@@ -1,16 +1,17 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/zserge/webview"
+	"controllers"
+	"fmt"
 	"log"
+	"mime"
 	"net"
 	"net/http"
-	"fmt"
-	"mime"
-	"time"
 	"path/filepath"
-	"controllers"
+	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/wswag/webview"
 )
 
 var browserContext webview.WebView
@@ -45,7 +46,7 @@ func startServer() string {
 		// default routes
 		// add the inject api
 		router.PathPrefix("/inject/").HandlerFunc(injectServiceHandler)
-	
+
 		// add user defined api routes etc.
 		SetupServer(router)
 
@@ -66,33 +67,33 @@ func startServer() string {
 func injectServiceHandler(w http.ResponseWriter, r *http.Request) {
 	name := filepath.Base(r.URL.Path)
 	ext := filepath.Ext(name)
-	name = name[0:len(name)-len(ext)]
+	name = name[0 : len(name)-len(ext)]
 	fmt.Println("Injecting a service: " + name)
 	w.Header().Add("Content-Type", mime.TypeByExtension(ext))
-	
+
 	// query the service and bind it in query mode
 	service, err := QueryService(name)
-	if (err != nil) {
+	if err != nil {
 		log.Fatalln("Service-Query of " + name + " threw an error: " + err.Error())
 	}
 	sync, js, err := browserContext.BindQuery(name, service)
 
 	// check synchronizer interface and attach sync function
 	syncer, ok := service.(controllers.Synchronizer)
-	if (ok) {
+	if ok {
 		syncer.SetSyncFunction(func() { browserContext.Dispatch(sync) })
 	}
 
-	if (err != nil) {
-		fmt.Println("Injection failed: " + err.Error())	
+	if err != nil {
+		fmt.Println("Injection failed: " + err.Error())
 	} else {
 		w.Write([]byte(js))
 		fmt.Println("Injection succeeded.")
-	}	
+	}
 }
 
 // InjectJs injects javascript code into the browser context
-func InjectJs(code... string) {
+func InjectJs(code ...string) {
 	log.Println("Injecting Js Code..")
 	browserContext.Dispatch(func() {
 		for _, c := range code {

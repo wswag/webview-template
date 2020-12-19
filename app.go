@@ -1,12 +1,13 @@
 package main
 
 import (
-	"net/http"
-	"errors"
-	"github.com/wswag/webview"
-	"github.com/gorilla/mux"
 	"controllers"
+	"errors"
 	"fmt"
+	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/wswag/webview"
 )
 
 var mainViewController *controllers.MainViewController
@@ -15,11 +16,11 @@ var mainViewController *controllers.MainViewController
 // the webview window
 func ConfigureWindow() webview.Settings {
 	return webview.Settings{
-		Width:  800,
-		Height: 600,
+		Width:     800,
+		Height:    600,
 		Resizable: true,
-		Title:  "Hello WebView!",
-		Debug: true,
+		Title:     "Hello WebView!",
+		Debug:     true,
 	}
 }
 
@@ -30,9 +31,9 @@ func ConfigureWindow() webview.Settings {
 // As the view has not yet been initialized, you may not call any
 // code injection funcs here
 func SetupServer(router *mux.Router) {
-	
-	mainViewController = &controllers.MainViewController {
-		Title: "Hello Go Controller!",
+
+	mainViewController = &controllers.MainViewController{
+		Title:  "Hello Go Controller!",
 		Answer: 42,
 	}
 
@@ -46,7 +47,7 @@ func SetupServer(router *mux.Router) {
 // SetupView might inject additional code on startup and/or setup the controllers.
 // Note that code injection is performed after the page has already been loaded
 func SetupView() {
-	
+
 }
 
 // QueryService should return a service interface identified by the given name which
@@ -59,8 +60,10 @@ func SetupView() {
 //
 func QueryService(name string) (interface{}, error) {
 	// map your services here
-	switch (name) {
-		case "model": return mainViewController, nil
-		default: return nil, errors.New("Service not available")
+	switch name {
+	case "model":
+		return mainViewController, nil
+	default:
+		return nil, errors.New("Service not available")
 	}
 }
